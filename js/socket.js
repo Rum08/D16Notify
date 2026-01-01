@@ -18,8 +18,13 @@ function startSocketServer(db, port = 3000) {
   // clientId => { ws, reportedName, ip, lastSeenMs, missedPongs, dbLastSeenMs, closing }
   const clients = new Map();
 
-  const wss = new WebSocket.Server({ port });
-  console.log("🟢 WebSocket running on :" + port);
+  // 🔥🔥🔥 FIX QUAN TRỌNG NHẤT – BIND RA TOÀN MẠNG
+  const wss = new WebSocket.Server({
+    host: "0.0.0.0",
+    port
+  });
+
+  console.log("🟢 WebSocket running on 0.0.0.0:" + port);
 
   async function upsertClient(clientId, patch) {
     try {
@@ -50,18 +55,12 @@ function startSocketServer(db, port = 3000) {
     return Date.now();
   }
 
-  function getOrCreateEntry(clientId) {
-    return clients.get(clientId);
-  }
-
   async function markOnline(clientId, { ws, reportedName, ip }) {
     const entry = clients.get(clientId);
 
     // Nếu clientId đã tồn tại nhưng ws khác -> đá ws cũ
     if (entry && entry.ws && entry.ws !== ws) {
-      try {
-        entry.ws.terminate();
-      } catch {}
+      try { entry.ws.terminate(); } catch {}
     }
 
     clients.set(clientId, {
@@ -115,15 +114,14 @@ function startSocketServer(db, port = 3000) {
     await upsertClient(clientId, { online: true, lastSeen: new Date() });
   }
 
-  wss.on("connection", (ws) => {
-    ws.isAlive = true; // dùng cho ping/pong
+  wss.on("connection", (ws, req) => {
+    ws.isAlive = true;
     let clientId = null;
 
     ws.on("pong", () => {
       ws.isAlive = true;
       if (clientId) {
         touchSeen(clientId);
-        // throttle ghi DB theo lastSeen
         throttleDbSeen(clientId).catch(() => {});
       }
     });
@@ -151,28 +149,24 @@ function startSocketServer(db, port = 3000) {
         return;
       }
 
-      // HEARTBEAT JSON (optional): chỉ touch RAM, KHÔNG ghi DB mỗi lần
+      // HEARTBEAT JSON (optional)
       if (data.type === "heartbeat" && clientId) {
         touchSeen(clientId);
-        // nếu muốn vẫn ghi DB theo throttle
         throttleDbSeen(clientId).catch(() => {});
         return;
       }
 
       if (data.type === "log") {
         console.log("📩", data.text);
-        return;
       }
     });
 
     ws.on("close", () => {
-      if (!clientId) return;
-      markOffline(clientId).catch(() => {});
+      if (clientId) markOffline(clientId).catch(() => {});
     });
 
     ws.on("error", () => {
-      if (!clientId) return;
-      markOffline(clientId).catch(() => {});
+      if (clientId) markOffline(clientId).catch(() => {});
     });
   });
 
@@ -180,28 +174,24 @@ function startSocketServer(db, port = 3000) {
   const pingInterval = setInterval(() => {
     for (const [id, entry] of clients.entries()) {
       const ws = entry.ws;
+
       if (!ws || ws.readyState !== WebSocket.OPEN) {
         markOffline(id).catch(() => {});
         continue;
       }
 
-      // nếu lần trước ping mà không pong
       if (ws.isAlive === false) {
         entry.missedPongs = (entry.missedPongs || 0) + 1;
 
         if (entry.missedPongs >= MAX_MISSED_PONGS) {
-          try {
-            ws.terminate();
-          } catch {}
+          try { ws.terminate(); } catch {}
           markOffline(id).catch(() => {});
           continue;
         }
       }
 
       ws.isAlive = false;
-      try {
-        ws.ping();
-      } catch {}
+      try { ws.ping(); } catch {}
     }
   }, PING_INTERVAL_MS);
 
