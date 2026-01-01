@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login</title>
+    <link rel="stylesheet" href="./css/login.css" />
+  </head>
+
+  <body>
+    <div class="login-box">
+      <h1 class="title">Login</h1>
+
+      <div class="input-group">
+        <label for="user">Username</label>
+        <input id="user" autocomplete="off" autofocus />
+      </div>
+
+      <div class="input-group">
+        <label for="pass">Password</label>
+        <input id="pass" type="password" autocomplete="off" />
+      </div>
+
+      <button id="btnLogin" class="btn" type="button">LOGIN</button>
+
+      <div id="error" class="error" style="display: none"></div>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+
+      function setError(msg) {
+        const el = $("error");
+        if (!msg) {
+          el.style.display = "none";
+          el.textContent = "";
+          return;
+        }
+        el.style.display = "block";
+        el.textContent = msg;
+      }
+
+      async function doLogin() {
+        setError("");
+
+        const username = ($("user").value || "").trim();
+        const password = ($("pass").value || "").trim();
+
+        if (!username) {
+          setError("Vui lòng nhập username");
+          $("user").focus();
+          return;
+        }
+        if (!password) {
+          setError("Vui lòng nhập password");
+          $("pass").focus();
+          return;
+        }
+
+        const btn = $("btnLogin");
+        btn.disabled = true;
+
+        try {
+          const res = await window.auth.login({ username, password });
+
+          // ✅ chuẩn hóa check
+          if (!res?.ok) {
+            const msg =
+              res?.error === "invalid_credentials"
+                ? "Sai tài khoản hoặc mật khẩu"
+                : res?.error === "blocked"
+                ? "User bị block, liên hệ admin."
+                : res?.error === "not_logged_in"
+                ? "Phiên đăng nhập bị mất"
+                : "Đăng nhập lỗi: " + (res?.error || "unknown");
+
+            setError(msg);
+            $("pass").focus();
+            $("pass").select();
+            return;
+          }
+
+          // ✅ OK: main.js sẽ mở cửa sổ chính và đóng login window
+        } catch (e) {
+          // cái này mới là IPC fail thật
+          setError(e?.message || String(e));
+          console.log(e);
+        } finally {
+          btn.disabled = false;
+        }
+      }
+
+      $("btnLogin").addEventListener("click", doLogin);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") doLogin();
+      });
+    </script>
+  </body>
+</html>

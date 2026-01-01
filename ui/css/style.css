@@ -1,0 +1,328 @@
+/* =========================
+   RESET / BASE
+========================= */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #020617, #020b2e);
+  color: #e5e7eb;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* =========================
+   CLIENT PANEL
+========================= */
+.clients {
+  width: 40%;
+  padding: 32px;
+  border-right: 1px solid rgba(255,255,255,0.12);
+
+  position: relative;
+  z-index: 10;              /* 🔥 CAO NHẤT */
+  pointer-events: auto;
+}
+
+.clients * {
+  pointer-events: auto;
+}
+
+.clients h2 {
+  margin-bottom: 16px;
+  font-size: 32px;
+}
+
+/* Search */
+.search-input {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: white;
+  font-size: 16px;
+}
+
+/* =========================
+   TABLE CLIENT
+========================= */
+.client-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.client-table thead tr {
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.client-table tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  cursor: pointer;
+}
+
+.client-table th,
+.client-table td {
+  padding: 18px 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.client-table th {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.client-table td:first-child {
+  width: 40px;
+}
+
+.client-table td:last-child {
+  width: 48px;
+  text-align: center;
+}
+
+/* Active row */
+.client-table tr.active {
+  background: rgba(59,130,246,0.18);
+}
+
+/* Status */
+.online {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.offline {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Delete button */
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #dc2626;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* =========================
+   SEND PANEL 
+========================= */
+.send {
+  flex: 1;
+  padding: 32px;
+
+  position: relative;
+  z-index: 1;              
+  pointer-events: auto;
+}
+
+.send h2 {
+  font-size: 36px;
+  margin-bottom: 24px;
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+
+  -webkit-app-region: no-drag;
+}
+
+.toolbar button {
+  width: 52px;
+  height: 52px;
+
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 12px;
+
+  color: #e5e7eb;
+  font-size: 18px;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolbar button:hover {
+  background: #1e293b;
+}
+
+/* =========================
+   MESSAGE EDITOR
+========================= */
+.editor {
+  width: 100%;
+  min-height: 260px;
+  max-height: 520px;
+
+  padding: 22px;
+  margin-bottom: 24px;
+
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 18px;
+
+  color: #e5e7eb;
+  font-size: 18px;
+  line-height: 1.6;
+
+  overflow-y: auto;
+  outline: none;
+
+  -webkit-app-region: no-drag;
+}
+
+.editor:empty::before {
+  content: attr(placeholder);
+  color: rgba(255,255,255,0.35);
+}
+
+/* =========================
+   SEND BUTTON
+========================= */
+#sendBtn {
+  padding: 16px 40px;
+  font-size: 22px;
+  border-radius: 14px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  cursor: pointer;
+}
+
+#sendBtn:hover {
+  background: #2563eb;
+}
+
+/* =========================
+   EMOJI PICKER
+========================= */
+.emoji-wrapper {
+  position: relative;
+}
+
+.emoji-panel {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 8px);
+  transform: translateY(-50%);
+
+  display: none;            
+
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+
+  padding: 12px;
+  min-width: 260px;
+
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 14px;
+
+  z-index: 2;               
+}
+
+.emoji-panel:not(.hidden) {
+  display: grid;
+}
+
+.emoji-panel span {
+  cursor: pointer;
+  font-size: 20px;
+  text-align: center;
+  user-select: none;
+}
+
+.emoji-panel span:hover {
+  background: rgba(255,255,255,0.12);
+  border-radius: 8px;
+}
+
+/* =========================
+   ELECTRON CLICK FIX
+========================= */
+.emoji-panel,
+.emoji-panel *,
+.toolbar,
+.toolbar *,
+.editor {
+  -webkit-app-region: no-drag;
+}
+
+/* Hidden utility */
+.hidden {
+  display: none !important;
+}
+/* =========================
+   LOG HISTORY
+========================= */
+.log-box {
+  margin-top: 32px;
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 18px;
+  padding: 18px;
+  max-height: 260px;
+}
+
+.log-box h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.log-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.log-item {
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 10px 0;
+}
+
+.log-time {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.log-client {
+  font-weight: 600;
+  color: #60a5fa;
+}
+
+.log-text {
+  margin-top: 4px;
+}
+
+.log-empty {
+  color: #9ca3af;
+  font-style: italic;
+}

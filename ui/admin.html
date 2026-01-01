@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Panel</title>
+
+    <link rel="stylesheet" href="./css/notify.css" />
+    <link rel="stylesheet" href="./css/notify_compose.css" />
+    <link rel="stylesheet" href="./css/admin.css" />
+    <link rel="stylesheet" href="./css/font.css" />
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <h2>ADMIN</h2>
+
+      <div class="menu" id="sideMenu">
+        <button class="menu-btn" data-tab="users" onclick="show('users')">
+          👤 Quản lý user
+        </button>
+        <button class="menu-btn" data-tab="clients" onclick="show('clients')">
+          🖥️ Quản lý Clients
+        </button>
+        <button class="menu-btn" data-tab="notify" onclick="show('notify')">
+          📢 Gửi thông báo
+        </button>
+        <button class="menu-btn" data-tab="logs" onclick="show('logs')">
+          📜 Lịch sử
+        </button>
+        <button class="menu-btn" data-tab="logout" onclick="logout()">
+          🚪 Đăng xuất
+        </button>
+      </div>
+
+      <!-- ✅ VERSION (bottom-left) -->
+      <div class="sidebar-footer">
+        <div id="appVersion" class="app-version">v0.0.0</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- USERS -->
+      <div id="users" class="page page-scroll">
+        <div class="page-header">
+          <h3>Quản lý User</h3>
+          <button class="ghost w160" id="btnRefreshUsersAll">🔄 Refresh</button>
+        </div>
+
+        <input id="u_name" placeholder="Username" autocomplete="off" />
+        <input
+          id="u_pass"
+          placeholder="Password"
+          type="password"
+          autocomplete="off"
+        />
+        <select id="u_role">
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+
+        <div class="row-flex" style="align-items: center; margin-top: 6px">
+          <button class="primary w220" id="addBtn">Thêm user</button>
+          <div style="flex: 1"></div>
+          <div class="muted count-right" id="usersCount">Users: 0</div>
+        </div>
+
+        <div class="table-scroll table-scroll--users">
+          <table>
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Tạo lúc</th>
+                <th>Tạo bởi</th>
+                <th>Cập nhật lúc</th>
+                <th>Cập nhật bởi</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="userList"></tbody>
+          </table>
+        </div>
+
+        <!-- ✅ ADMIN AUDIT (ROOT ONLY) -->
+        <section id="adminAuditSection" class="section" style="display: none">
+          <div class="muted" style="margin-bottom: 8px">
+            * Chỉ ROOT admin mới thấy mục này.
+          </div>
+
+          <div class="section-title-row">
+            <div class="section-title">Lịch sử thao tác admin</div>
+            <div id="adminAuditCount" class="muted">Tổng: 0</div>
+          </div>
+
+          <div
+            class="table-scroll table-scroll--audit"
+            style="margin-top: 10px"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 60px">#</th>
+                  <th style="width: 170px">Thời gian</th>
+                  <th style="width: 140px">Admin</th>
+                  <th style="width: 160px">Hành động</th>
+                  <th style="width: 140px">Target</th>
+                  <th>Ghi chú</th>
+                </tr>
+              </thead>
+              <tbody id="adminAuditList"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ✅ LOGIN LOGS (ROOT ONLY) -->
+        <section id="loginLogsSection" class="section" style="display: none">
+          <div class="section-title-row" style="margin-top: 6px">
+            <div class="section-title">Lịch sử đăng nhập</div>
+            <div class="muted" id="loginLogsCount">Tổng: 0</div>
+          </div>
+
+          <div class="row-flex" style="align-items: center">
+            <input
+              id="loginLogSearch"
+              placeholder="Tìm theo username / IP / máy / role..."
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="table-scroll table-scroll--loginlogs">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 60px">#</th>
+                  <th style="width: 170px">Thời gian</th>
+                  <th style="width: 140px">Username</th>
+                  <th style="width: 90px">Role</th>
+                  <th>Thiết bị</th>
+                  <th style="width: 140px">IP</th>
+                  <th style="width: 180px">Platform</th>
+                </tr>
+              </thead>
+              <tbody id="loginLogList"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- CLIENTS -->
+      <div id="clients" class="page page-scroll" style="display: none">
+        <h3>Quản lý Clients</h3>
+
+        <div class="row-flex">
+          <div class="row-left">
+            <input
+              id="clientSearchAdmin"
+              placeholder="Tìm client theo name / ip / id..."
+            />
+            <button class="ghost w160" id="btnRefreshClients">
+              🔄 Refresh
+            </button>
+          </div>
+
+          <div class="row-right">
+            <div class="muted" id="clientsCount">clients: 0</div>
+          </div>
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 60px">STT</th>
+                <th>Name (sửa được)</th>
+                <th style="width: 150px">Trạng thái</th>
+                <th style="width: 180px">IP client</th>
+                <th style="width: 170px">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="clientListAdmin"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- NOTIFY -->
+      <div id="notify" class="page" style="display: none">
+        <div id="composeMountAdmin"></div>
+      </div>
+
+      <!-- LOG -->
+      <div id="logs" class="page page-scroll" style="display: none">
+        <h3>Lịch sử thông báo</h3>
+
+        <div class="row-flex">
+          <div class="row-left">
+            <input
+              class="logSearch"
+              id="logSearch"
+              placeholder="Tìm theo client/name/ip/người gửi/nội dung..."
+            />
+            <button class="ghost w160" id="btnRefreshLogs">🔄 Refresh</button>
+            <button class="primary w160" id="btnExportExcel">
+              ⬇ Export Excel
+            </button>
+          </div>
+
+          <div class="row-right">
+            <div class="muted" id="logsCount">Tổng: 0</div>
+          </div>
+        </div>
+
+        <div
+          class="row-flex"
+          style="
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+          "
+        >
+          <select id="logByFilter" class="w220">
+            <option value="">-- Người gửi --</option>
+          </select>
+
+          <select id="logClientFilter" class="w260">
+            <option value="">-- Client --</option>
+          </select>
+
+          <input id="logFrom" class="w160" type="date" />
+          <input id="logTo" class="w160" type="date" />
+
+          <div style="flex: 1"></div>
+
+          <button class="ghost w160" id="btnPrevLogs">⬅ Trước</button>
+          <div class="muted" id="logsPageInfo">Trang 1/1 • 50/trang</div>
+          <button class="ghost w160" id="btnNextLogs">Sau ➡</button>
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 60px">#</th>
+                <th style="width: 170px">Thời gian</th>
+                <th style="width: 120px">Người gửi</th>
+                <th style="width: 200px">Client</th>
+                <th style="width: 140px">IP</th>
+                <th style="width: 90px">Dur</th>
+                <th style="width: 110px">Status</th>
+                <th>Nội dung</th>
+              </tr>
+            </thead>
+            <tbody id="logList"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MESSAGE MODAL -->
+    <div id="msgOverlay" class="modal-overlay" role="dialog" aria-modal="true">
+      <div class="modal">
+        <h4>Thông báo</h4>
+        <p id="msgText"></p>
+        <div class="actions2">
+          <button class="btn btn-ok" id="msgOk">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT USER MODAL -->
+    <div id="editOverlay" class="modal-overlay" role="dialog" aria-modal="true">
+      <div class="modal">
+        <h4>Sửa user</h4>
+
+        <div class="row">
+          <div class="muted">Username</div>
+          <input id="e_username" disabled />
+        </div>
+
+        <div class="row">
+          <div class="muted">Role</div>
+          <select id="e_role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <div class="muted">Password (để trống nếu không đổi)</div>
+          <input
+            id="e_pass"
+            type="password"
+            placeholder="Nhập password mới..."
+          />
+        </div>
+
+        <div class="actions2">
+          <button class="btn btn-cancel" id="editCancel">Hủy</button>
+          <button class="btn btn-ok" id="editSave">Lưu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELETE USER MODAL -->
+    <div id="delOverlay" class="modal-overlay" role="dialog" aria-modal="true">
+      <div class="modal">
+        <h4>Xóa user</h4>
+        <p id="delText"></p>
+        <div class="actions2">
+          <button class="btn btn-cancel" id="delCancel">Hủy</button>
+          <button class="btn btn-danger" id="delOk">Xóa</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELETE CLIENT MODAL -->
+    <div
+      id="delClientOverlay"
+      class="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="modal">
+        <h4>Xóa client</h4>
+        <p id="delClientText"></p>
+        <div class="actions2">
+          <button class="btn btn-cancel" id="delClientCancel">Hủy</button>
+          <button class="btn btn-danger" id="delClientOk">Xóa</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- libs -->
+    <script src="./js/notify_ui.js"></script>
+    <script src="./js/admin_page.js" defer></script>
+  </body>
+</html>

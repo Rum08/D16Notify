@@ -1,0 +1,55 @@
+<!-- ui/partials/notify_compose.html -->
+<div class="compose-root">
+  <h2>Gửi thông báo</h2>
+
+  <!-- Thanh hiển thị client đang chọn -->
+  <div class="selected-bar" id="selectedBar">
+    <div>Đang chọn: <b id="selectedClientName">Chưa chọn</b></div>
+    <span class="pill off" id="selectedClientStatus">OFFLINE</span>
+  </div>
+
+  <div class="toolbar">
+    <button type="button" class="tool-btn" data-cmd="bold"><b>B</b></button>
+    <button type="button" class="tool-btn" data-cmd="italic"><i>I</i></button>
+    <button type="button" class="tool-btn" data-cmd="underline">
+      <u>U</u>
+    </button>
+
+    <div class="emoji-wrapper">
+      <button type="button" class="tool-btn" id="emojiBtn">😊</button>
+      <div id="emojiPanel" class="emoji-panel hidden">
+        <span>😀</span><span>😁</span><span>😂</span><span>🤣</span>
+        <span>😊</span><span>😍</span><span>😎</span><span>🤔</span>
+        <span>😭</span><span>😡</span><span>👍</span><span>👎</span>
+        <span>🔥</span><span>🎉</span><span>❤️</span><span>🚨</span>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="msg"
+    class="editor disabled"
+    contenteditable="false"
+    placeholder="Nhập nội dung thông báo..."
+  ></div>
+
+  <div class="send-row">
+    <button id="sendBtn" class="sendBtn" disabled>GỬI</button>
+
+    <!-- ✅ counter x/250 -->
+    <div
+      id="charCounter"
+      style="
+        margin-left: 10px;
+        white-space: nowrap;
+        user-select: none;
+        opacity: 0.85;
+      "
+    >
+      0/250
+    </div>
+
+    <!-- slot để từng trang nhét UI -->
+    <div id="notifyMetaSlot"></div>
+  </div>
+</div>

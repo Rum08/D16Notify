@@ -1,0 +1,525 @@
+/* =========================
+   BASE LAYOUT
+   ========================= */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #fff;
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  background: #020617;
+  padding: 20px;
+  border-right: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  color: #38bdf8;
+  margin: 0 0 20px 0;
+}
+
+.menu {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.menu .menu-btn {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #1e293b;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  text-align: left;
+  transition: 0.15s ease;
+}
+.menu .menu-btn:hover {
+  background: #2563eb;
+}
+.menu .menu-btn.active {
+  background: #4f46e5;
+  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.35) inset;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
+}
+.app-version {
+  color: #facc15;
+  font-size: 11px;
+  opacity: 0.9;
+  user-select: none;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.page {
+  min-height: 0;
+}
+.page.page-scroll {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.page h3,
+.page h2 {
+  margin-top: 0;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+}
+.page-header h3 {
+  margin: 0;
+}
+
+/* =========================
+   FORM CONTROLS
+   ========================= */
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border-radius: 6px;
+  border: none;
+  box-sizing: border-box;
+  outline: none;
+  background: #0b1224;
+  color: #fff;
+}
+
+input[type="date"] {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.2);
+  opacity: 0.85;
+  cursor: pointer;
+}
+
+/* =========================
+   BUTTONS
+   ========================= */
+button.primary {
+  background: #2563eb;
+  color: white;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 6px;
+  height: 40px;
+}
+
+button.ghost {
+  background: #1e293b;
+  color: #fff;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button.danger {
+  background: #b91c1c;
+  color: #fff;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+#addBtn {
+  margin-top: 0;
+}
+
+/* =========================
+   TABLES (GLOBAL)
+   ========================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th,
+td {
+  border-bottom: 1px solid #334155;
+  padding: 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ✅ ACTION BUTTONS (Users + Clients dùng chung) */
+.actions button,
+.actions button.ghost,
+.actions button.danger,
+.actions button.primary {
+  height: 26px;
+  padding: 0 10px;
+  line-height: 26px;
+  font-size: 11px;
+  border-radius: 8px;
+  margin: 0;
+}
+
+/* =========================
+   STATUS BADGE
+   ========================= */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid #334155;
+  background: rgba(30, 41, 59, 0.6);
+}
+.badge.on {
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #34d399;
+}
+.badge.off {
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #f87171;
+}
+
+.muted {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+/* =========================
+   MODAL
+   ========================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal {
+  width: 440px;
+  background: #0b1224;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal h4 {
+  margin: 0 0 10px 0;
+  color: #38bdf8;
+  font-size: 18px;
+}
+.modal p {
+  margin: 0 0 14px 0;
+  color: #e2e8f0;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+.modal .row {
+  margin: 10px 0;
+}
+.modal .actions2 {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+.btn-ok {
+  background: #2563eb;
+  color: #fff;
+}
+.btn-cancel {
+  background: #1e293b;
+  color: #fff;
+}
+.btn-danger {
+  background: #b91c1c;
+  color: #fff;
+}
+
+/* =========================
+   HELPERS
+   ========================= */
+.section {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #1e293b;
+}
+
+.section-title-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-title {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+/* ✅ FIX CHUẨN: row-flex chỉ input/select/textarea mới grow */
+.row-flex {
+  display: flex;
+  gap: 65px;
+  align-items: center;
+}
+.row-flex > * {
+  flex: 0 0 auto; /* <-- FIX: không ép tất cả thành flex:1 nữa */
+}
+.row-flex > input,
+.row-flex > select,
+.row-flex > textarea {
+  flex: 1 1 auto; /* <-- chỉ form control mới giãn */
+  min-width: 0;
+}
+
+/* ✅ Right group: dạt hẳn qua phải */
+.row-right {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end; /* <-- FIX: nút nằm sát mép phải */
+  flex: 0 0 auto; /* <-- FIX: không bị chiếm 1 vùng rộng */
+}
+/* ✅ Left group: dạt hẳn qua trái */
+.row-left {
+  width: 100%;
+  margin-right: auto;
+  display: flex;
+  gap: 10px;
+  align-items: left;
+  justify-content: flex-start; /* <-- FIX: nút nằm sát mép trái */
+  flex: 1 1 auto; /* <-- FIX: không bị chiếm 1 vùng rộng */
+}
+
+/* ✅ Fix nút cao thấp trong header rows (Refresh/Export/Tổng) */
+.row-flex button {
+  margin-top: 0; /* đè margin-top:6px của button.primary */
+}
+.row-right button {
+  height: 36px;
+  padding: 0 14px;
+  line-height: 36px;
+  margin: 0;
+}
+.row-right .muted {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  margin: 0;
+  font-size: 12px;
+}
+
+.w160 {
+  width: 160px;
+  flex: 0 0 160px;
+}
+.w220 {
+  width: 220px;
+  flex: 0 0 220px;
+}
+.w260 {
+  width: 260px;
+  flex: 0 0 260px;
+}
+.w420 {
+  width: 420px;
+  flex: 0 0 420px;
+}
+
+/* =========================
+   SCROLL CONTAINERS
+   ========================= */
+.table-scroll {
+  overflow: auto;
+  margin-top: 10px;
+  border-radius: 10px;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.table-scroll thead th {
+  position: sticky;
+  top: 0;
+  background: #0b1224;
+  z-index: 2;
+}
+
+.table-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.table-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 999px;
+}
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.35);
+}
+
+/* =========================
+   USERS TABLE SIZE
+   ========================= */
+.table-scroll--users {
+  width: 100%;
+  flex: 0 0 auto;
+}
+body.is-root .table-scroll--users {
+  max-height: 280px;
+}
+body:not(.is-root) .table-scroll--users {
+  max-height: 520px;
+}
+
+#users table th,
+#users table td {
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+/* =========================
+   AUDIT + LOGIN LOGS (5 rows + scroll)
+   ========================= */
+.table-scroll--audit,
+.table-scroll--loginlogs {
+  height: 220px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border-radius: 12px;
+}
+
+.table-scroll--audit th,
+.table-scroll--audit td,
+.table-scroll--loginlogs th,
+.table-scroll--loginlogs td {
+  padding: 6px 8px;
+  font-size: 12.5px;
+}
+
+.count-right {
+  margin-left: auto;
+  text-align: right;
+  flex: 0 0 auto;
+}
+
+/* =========================
+   CLIENTS (COMPACT)
+   ========================= */
+#clients table th,
+#clients table td {
+  vertical-align: middle !important;
+  padding: 6px 8px !important;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+#clients table th:first-child,
+#clients table td:first-child {
+  width: 60px;
+  text-align: center;
+}
+
+#clients table th:nth-child(2),
+#clients table td:nth-child(2) {
+  width: 520px;
+  max-width: 520px;
+}
+
+#clients .client-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+#clients .client-name-input {
+  height: 28px !important;
+  padding: 4px 8px !important;
+  margin: 0 !important;
+  font-size: 13px !important;
+  border-radius: 8px !important;
+  flex: 0 0 240px !important;
+  max-width: 240px !important;
+}
+
+#clients .client-meta {
+  font-size: 11px !important;
+  color: #94a3b8 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+#clients .badge {
+  padding: 3px 8px !important;
+  font-size: 11px !important;
+}
+
+.client-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.client-inline .client-title {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+.client-inline .client-id {
+  white-space: nowrap;
+  font-size: 11px;
+}

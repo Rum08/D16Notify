@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>User Panel</title>
+    <link rel="stylesheet" href="./css/notify.css" />
+    <link rel="stylesheet" href="./css/notify_compose.css" />
+    <link rel="stylesheet" href="./css/font.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- LEFT -->
+      <div class="clients">
+        <h2>Table Online</h2>
+
+        <div class="topbar">
+          <div class="who">Xin chào, <span id="meName">...</span></div>
+          <button id="logoutBtn" class="ghost">Đăng xuất</button>
+        </div>
+
+        <div class="row-actions">
+          <input
+            type="text"
+            id="searchClient"
+            class="search-input"
+            placeholder="🔍 Tìm table..."
+            autocomplete="off"
+          />
+          <button id="btnRefreshClients" class="ghost" style="min-width: 120px">
+            🔄 Refresh
+          </button>
+        </div>
+
+        <div class="hint" id="clientsHint">Auto refresh: 10 phút/lần</div>
+
+        <table class="client-table">
+          <thead>
+            <tr>
+              <th style="width: 60px">#</th>
+              <th>Name Table</th>
+              <th style="width: 120px">Status</th>
+              <th style="width: 120px"></th>
+            </tr>
+          </thead>
+          <tbody id="clientList"></tbody>
+        </table>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="send">
+        <div id="composeMount"></div>
+
+        <div class="log-box">
+          <h3>Lịch sử thông báo</h3>
+          <div id="logList" class="log-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ MODAL (để thay alert, không mất focus) -->
+    <div id="msgOverlay" class="modal-overlay" role="dialog" aria-modal="true">
+      <div class="modal">
+        <h4>Thông báo</h4>
+        <p id="msgText"></p>
+        <div class="actions2">
+          <button class="btn btn-ok" id="msgOk">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- scripts (✅ chỉ include 1 lần) -->
+    <script src="./js/notify_ui.js"></script>
+    <script src="./js/partials.js"></script>
+    <script src="./js/user_page.js"></script>
+
+    <script>
+      (async () => {
+        await loadPartialInto(
+          "#composeMount",
+          "./partials/notify_compose.html"
+        );
+
+        // user: meta slot trống
+        const slot = document.getElementById("notifyMetaSlot");
+        if (slot) slot.innerHTML = "";
+      })();
+    </script>
+  </body>
+</html>

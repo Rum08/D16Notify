@@ -1,0 +1,204 @@
+/* ui/css/notify_compose.css */
+/* ✅ Scope toàn bộ vào .compose-root để admin.css không đè */
+
+.compose-root {
+  color: #fff;
+}
+
+.compose-root h2 {
+  margin: 0 0 18px 0;
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+/* ===== Selected bar ===== */
+.compose-root .selected-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin: 6px 0 14px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(2, 6, 23, 0.35);
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.compose-root .selected-bar b {
+  color: #e2e8f0;
+  font-weight: 800;
+}
+
+.compose-root .pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+.compose-root .pill.on {
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.5);
+  background: rgba(52, 211, 153, 0.08);
+}
+.compose-root .pill.off {
+  color: #fb7185;
+  border-color: rgba(251, 113, 133, 0.5);
+  background: rgba(251, 113, 133, 0.08);
+}
+
+/* ===== Toolbar ===== */
+.compose-root .toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 10px 0 14px;
+}
+
+.compose-root .tool-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(2, 6, 23, 0.35);
+  color: #e2e8f0;
+  font-size: 22px;
+  cursor: pointer;
+}
+.compose-root .tool-btn:hover {
+  background: rgba(37, 99, 235, 0.35);
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+/* ===== Emoji ===== */
+.compose-root .emoji-wrapper {
+  position: relative;
+}
+
+.compose-root .emoji-panel {
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: 240px;
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(2, 6, 23, 0.95);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  z-index: 50;
+}
+
+.compose-root .emoji-panel span {
+  font-size: 22px;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  padding: 6px 0;
+  border-radius: 10px;
+}
+.compose-root .emoji-panel span:hover {
+  background: rgba(37, 99, 235, 0.35);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ===== Editor ===== */
+.compose-root .editor {
+  width: 100%;
+  min-height: 220px;
+  padding: 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(2, 6, 23, 0.35);
+  outline: none;
+  color: #e2e8f0;
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.compose-root .editor:empty:before {
+  content: attr(placeholder);
+  color: rgba(148, 163, 184, 0.55);
+}
+
+.compose-root .editor.disabled {
+  opacity: 0.45;
+  filter: grayscale(0.2);
+  pointer-events: none;
+}
+
+/* ===== Send row ===== */
+.compose-root .send-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.compose-root .sendBtn,
+.compose-root #sendBtn {
+  width: 180px;
+  height: 70px;
+  border-radius: 18px;
+  border: none;
+  background: #5b74ff;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: filter 0.15s ease, opacity 0.15s ease;
+}
+
+.compose-root .sendBtn:hover,
+.compose-root #sendBtn:hover {
+  filter: brightness(1.08);
+}
+
+.compose-root .sendBtn:disabled,
+.compose-root #sendBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: none;
+}
+
+/* ===== Meta slot (admin inject select + duration) ===== */
+.compose-root #notifyMetaSlot {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.compose-root #notifyMetaSlot select,
+.compose-root #notifyMetaSlot input {
+  height: 52px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(2, 6, 23, 0.35);
+  color: #e2e8f0;
+  outline: none;
+  font-size: 16px;
+}
+/* wrapper của vùng nhập */
+.compose-card,
+.compose-body,
+.editor-wrap,
+#composeMountAdmin .editor-wrap {
+  border-radius: 50px; /* tuỳ mày */
+  overflow: hidden; /* ✅ quan trọng: để bo tròn ăn cả 4 góc */
+}
+
+/* chính ô nhập (contenteditable) */
+#msg {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 2; /* để wrapper quyết định bo tròn */
+}

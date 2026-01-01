@@ -1,0 +1,45 @@
+{
+  "name": "dms-server",
+  "version": "1.0.0",
+  "description": "DMS Server - © by D16 IT Team",
+  "author": "D16 IT Team",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "mongodb": "^7.0.0",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.d16.dms.server",
+    "productName": "DMS Server",
+    "asar": true,
+    "directories": {
+      "buildResources": "build"
+    },
+    "files": [
+      "**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,readme.md,README,readme}",
+      "!**/node_modules/.bin",
+      "!**/*.{map,ts}"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "DMS Server"
+    }
+  }
+}
